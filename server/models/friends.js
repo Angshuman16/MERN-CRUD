@@ -9,10 +9,6 @@ const FriendSchema = new mongoose.Schema({
     type:Number,
     required:true,
    },
-   description:{
-    type:String,
-    required:false,
-   }
 });
 
 const FriendModel= mongoose.model("friends",FriendSchema);

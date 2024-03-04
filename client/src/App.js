@@ -12,7 +12,6 @@ function App() {
 
 
 
-
   const AddFriend = () =>{
     Axios.post("http://localhost:3001/addfriend",{
       name:name,
@@ -27,6 +26,24 @@ function App() {
     })
     
   }
+
+  const updateFriend = (ids) =>{
+    const newAge =prompt("Enter New Age: ")
+    Axios.put("http://localhost:3001/update",{newAge: newAge, id: ids}).then(()=>{
+      setListofFriends(listofFriends.map((val)=>{
+        return val._id==ids?{_id:ids,name:val.name,age:newAge} :val 
+      }))
+    })
+ };
+
+
+ const deleteFriend = (id) =>{
+  Axios.delete(`http://localhost:3001/delete/${id}`).then(()=>{
+    setListofFriends(listofFriends.filter((val)=>{
+          return val._id!==id;
+    }))
+  })
+ }
 
   useEffect(()=>{
      
@@ -45,7 +62,7 @@ function App() {
       <div className="inputs">
       <input placeholder="Add your Friend's Name" type="text" onChange={(e)=>setName(e.target.value)}></input>
      <input placeholder="Add your Friend's Age" type="number" onChange={(e)=>setAge(e.target.value)}></input>
-     <input placeholder="Description" type="text"></input>
+     
 
      
 
@@ -61,8 +78,12 @@ function App() {
           <h3>Name:{frnds.name}</h3> 
           <h3>Age: {frnds.age}</h3>
           </div>
-          <button>Update</button>
-          <button>Delete</button>
+          <button onClick={()=>{
+            updateFriend(frnds._id)
+          }}>Update</button>
+          <button onClick={()=>{
+            deleteFriend(frnds._id);
+          }}>Delete</button>
           </div>
         )
        })}
